@@ -1,0 +1,11 @@
+.key {
+}
+
+.keyboard {
+  display: grid;
+  grid-template-columns: repeat(14, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  &__key {
+    border: 1px solid $primary-color;
+  }
+}
