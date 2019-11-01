@@ -1,0 +1,48 @@
+{
+  "name": "virtual-keyboard",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config webpack.prod.js",
+    "dev": "webpack-dev-server --open --config webpack.dev.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saloev/virtual-keyboard"
+  },
+  "author": "Saloev S.A.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/saloev/virtual-keyboard/issues"
+  },
+  "homepage": "https://github.com/saloev/virtual-keyboard#readme",
+  "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-private-methods": "^7.6.0",
+    "@babel/preset-env": "^7.6.3",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^3.2.0",
+    "cssnano": "^4.1.10",
+    "extract-loader": "^3.1.0",
+    "file-loader": "^4.2.0",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "include-media": "^1.4.9",
+    "mini-css-extract-plugin": "^0.8.0",
+    "node-sass": "^4.12.0",
+    "postcss-import": "^12.0.1",
+    "postcss-loader": "^3.0.0",
+    "postcss-preset-env": "^6.7.0",
+    "sass": "^1.23.0",
+    "sass-loader": "^8.0.0",
+    "sugarss": "^2.0.0",
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.8.2",
+    "webpack-merge": "^4.2.2"
+  },
+  "dependencies": {}
+}
