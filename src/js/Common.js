@@ -1,7 +1,7 @@
 export default class Common {
   /**
    *
-   * @param {DOM element} elem
+   * @param {HTMLElement} elem
    * @param {String} selector
    * @param {Boolean} all
    */
@@ -28,8 +28,8 @@ export default class Common {
 
   /**
    *
-   * @param {DOM element} to
-   * @param {Array{DOM element}} elements
+   * @param {HTMLElement} to
+   * @param {Array{HTMLElement}} elements
    *
    */
   appendElements(to, elements) {
