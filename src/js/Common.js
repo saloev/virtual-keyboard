@@ -1,6 +1,4 @@
 export default class Common {
-  constructor() {}
-
   /**
    *
    * @param {DOM element} elem
@@ -8,7 +6,9 @@ export default class Common {
    * @param {Boolean} all
    */
   select(elem, selector, all = false) {
-    return all ? elem.querySelectorAll(selector) : elem.querySelector(selector);
+    this.selected = all
+      ? elem.querySelectorAll(selector)
+      : elem.querySelector(selector);
   }
 
   /**
@@ -16,9 +16,9 @@ export default class Common {
    * @param {Array{String}} classList
    */
   createElements(tagNames, classList) {
-    return tagNames.reduce((acc, tag) => {
+    this.createdElements = tagNames.reduce((acc, tag) => {
       const newAcc = document.createElement(tag);
-      classList.map(strClass => {
+      classList.forEach((strClass) => {
         newAcc.classList.add(strClass);
       });
 
@@ -35,17 +35,19 @@ export default class Common {
   appendElements(to, elements) {
     const fragMent = document.createDocumentFragment();
 
-    elements.map(elem => {
-      fragMent.appendChild(elem);
+    elements.forEach((element) => {
+      fragMent.appendChild(element);
     });
 
     to.appendChild(fragMent);
+
+    return this;
   }
 
   /**
    *
    */
-  detectKey = e => {
+  detectKey = (e) => {
     this.pressedKey = e.key;
   };
 
@@ -53,13 +55,13 @@ export default class Common {
    *
    */
   addKeyUpEvent() {
-    document.body.addEventListener("keyup", this.detectKey);
+    document.body.addEventListener('keyup', this.detectKey);
   }
 
   /**
    * removeKeyUpEvent
    */
   removeKeyUpEvent() {
-    document.body.removeEventListener("keyup", this.detectKey);
+    document.body.removeEventListener('keyup', this.detectKey);
   }
 }

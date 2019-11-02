@@ -1,5 +1,5 @@
-import "./scss/main.scss";
+import './scss/main.scss';
 
 const init = () => {};
 
-window.addEventListener("DOMContentLoaded", init);
+window.addEventListener('DOMContentLoaded', init);

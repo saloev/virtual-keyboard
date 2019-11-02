@@ -1,4 +1,4 @@
-import Common from "./Common";
+import Common from './Common';
 
 class Keyboard extends Common {}
 
