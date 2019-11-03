@@ -3,3 +3,6 @@ start:
 
 prod:
 	npm run build
+
+try: 
+	npm i && npm run build
