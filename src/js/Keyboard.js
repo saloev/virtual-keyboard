@@ -6,7 +6,6 @@ import {
 } from './data/dataUtils';
 
 
-// extends Common ????
 class Keyboard {
   constructor(selector) {
     this.keyboardSelector = selector;
@@ -27,6 +26,9 @@ class Keyboard {
     this.addEvents();
   }
 
+  /**
+   * @param {String} lang
+   */
   language(lang) {
     if (localStorage.getItem('language')) {
       this.currentLanguage = localStorage.getItem('language');
@@ -34,11 +36,6 @@ class Keyboard {
       localStorage.setItem('language', lang);
       this.currentLanguage = lang;
     }
-  }
-
-  static set language(lang) {
-    localStorage.setItem('language', lang);
-    this.language = 'lang';
   }
 
   appendKeyboard() {
@@ -59,8 +56,12 @@ class Keyboard {
     [this.textarea] = this.keyboard.children;
   }
 
-  changeTextLanguage(changeState) {
-    // TODO rewrite
+  /**
+   *
+   * @param {String} changeState
+   */
+  changeText(changeState) {
+    // TODO rewrite dispatch object
     const dispatchTextLanguage = {
       en: KEYBOARD_EN.flat(),
       ru: KEYBOARD_RU.flat(),
@@ -90,9 +91,13 @@ class Keyboard {
   changeLanguage() {
     this.currentLanguage = this.currentLanguage === 'en' ? 'ru' : 'en';
     localStorage.setItem('language', this.currentLanguage);
-    this.changeTextLanguage();
+    this.changeText();
   }
 
+  /**
+   *
+   * @param {EventObject} e
+   */
   activeKey(e) {
     const { code } = e;
     this.keys.forEach((elem) => {
@@ -101,6 +106,11 @@ class Keyboard {
       }
     });
   }
+
+  /**
+   *
+   * @param {EventObject} e
+   */
 
   removeActiveKey(e) {
     const { key, code } = e;
@@ -112,11 +122,15 @@ class Keyboard {
     });
   }
 
+  /**
+   *
+   * @param {String} textValue
+   * @param {Boolean} focusToTextarea
+   */
   insertText(textValue, focusToTextarea = true) {
     const dispatchSpecialText = {
       CapsLock: '',
-      TAB: '\t',
-      Tab: '',
+      Tab: '\t',
       Enter: '\n',
       Shift: '',
       Ctrl: '',
@@ -145,14 +159,17 @@ class Keyboard {
 
   shiftKeyPressed = () => {
     const capsLockLang = this.currentLanguage === 'en' ? 'shiftEN' : 'shiftRU';
-    this.changeTextLanguage(capsLockLang);
+    this.changeText(capsLockLang);
   }
 
   keysToUpperCase = () => {
     const capsLockLang = this.currentLanguage === 'en' ? 'capsLockEN' : 'capsLockRU';
-    this.changeTextLanguage(capsLockLang);
+    this.changeText(capsLockLang);
   }
 
+  /**
+   * @param {EventObject} e
+   */
   keyDown = (e) => {
     const { key, code, altKey } = e;
     if (key === 'Shift' && altKey) { this.changeLanguage(); }
@@ -164,12 +181,18 @@ class Keyboard {
     this.insertText(textOfKey);
   }
 
+  /**
+   * @param {EventObject} e
+   */
   keyUp = (e) => {
     const { key } = e;
     this.removeActiveKey(e);
-    if (key === 'Shift') { this.changeTextLanguage(); }
+    if (key === 'Shift') { this.changeText(); }
   }
 
+  /**
+   * @param {EventObject} e
+   */
   clickKey = (e) => {
     const { target: elem } = e;
     if (elem.tagName !== 'BUTTON') return;
@@ -178,7 +201,7 @@ class Keyboard {
       if (hasOnClass) {
         this.keysToUpperCase();
       } else {
-        this.changeTextLanguage();
+        this.changeText();
       }
     }
 

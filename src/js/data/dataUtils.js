@@ -18,7 +18,11 @@ const lastKeyboardRow = () => [
   { text: '&darr;' },
   { text: '&rarr;' }];
 
-
+/**
+ * create basic keyboard data
+ * @param {String} lang
+ * @returns {Array{Array{Object}}} @example [[{text: 'Shift', cssClass ['key']}]]
+ */
 const mainKeyboardData = (lang) => {
   const keyboardRows = lang.split('$$$');
 
@@ -84,7 +88,7 @@ const mainKeyboardData = (lang) => {
 
   const keyboard = [...mainKeyboard, lastKeyboardRow()];
 
-  // add keyCode as css
+  // add keyCode as css class
   return keyboard.map((row, index) => {
     const newRow = row.map((key, rowIndex) => {
       const { cssClass } = key;
@@ -100,6 +104,10 @@ const mainKeyboardData = (lang) => {
   });
 };
 
+/**
+ * Keyboard text when CapsLock pressed
+ * @param {Array{Array{Object}}} keyboardData @see mainKeyboardData
+ */
 const keyboardCapsLock = (keyboardData) => keyboardData
   .reduce((acc, keyboardRow) => {
     const keyboardRowSymbols = keyboardRow.map((symbol) => {
@@ -116,6 +124,10 @@ const keyboardCapsLock = (keyboardData) => keyboardData
     return [...acc, keyboardRowSymbols];
   }, []);
 
+/**
+ * Keyboard text when Shift pressed
+ * @param {Array{Array{Object}}} keyboardData @see mainKeyboardData
+ */
 const keyboardShift = (keyboardData, topShiftKeyboard) => {
   const [topRow, ...rest] = keyboardData;
   const newTopRow = topRow.map((symbol, index) => {

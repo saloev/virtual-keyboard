@@ -1,3 +1,7 @@
+/**
+ * basic API DOM for
+ * create, append, select DOM elements
+ */
 export default class DOM {
   /**
    *

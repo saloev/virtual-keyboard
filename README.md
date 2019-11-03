@@ -1,5 +1,8 @@
 ### Virtual keyboard
 
+#### Demo
+[Demo](https://saloev.github.io/virtual-keyboard/)
+
 ##### Try it 
 ```
 npm i
