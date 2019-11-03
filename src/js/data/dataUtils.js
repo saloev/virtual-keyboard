@@ -3,18 +3,21 @@ import {
   EN,
   EN_KEYBOARDS_TOP_SHIFT,
   RU_KEYBOARDS_TOP_SHIFT,
-} from './KeyboardData';
+  KEYBOARD_CODE,
+} from './keyboardData';
 
 
-const lastKeyboardRow = () => [{ text: 'Ctrl' },
+const lastKeyboardRow = () => [
+  { text: 'Ctrl' },
   { text: 'Win' },
   { text: 'Alt' },
-  { text: 'Space', cssClass: 'key__space' },
+  { text: 'Space', cssClass: ['keyboard__space'] },
   { text: 'Alt' },
   { text: 'Ctr' },
   { text: '&larr;' },
   { text: '&darr;' },
   { text: '&rarr;' }];
+
 
 const mainKeyboardData = (lang) => {
   const keyboardRows = lang.split('$$$');
@@ -36,25 +39,25 @@ const mainKeyboardData = (lang) => {
       case 0: {
         const specialKey = {};
         specialKey.text = 'Backspace';
-        specialKey.cssClass = 'key__backspace';
+        specialKey.cssClass = ['keyboard__backspace'];
         newRow = [...letters, specialKey];
         break;
       }
       case 1: {
         const specialKey = {};
         specialKey.text = 'Tab';
-        specialKey.cssClass = 'key__tab';
+        specialKey.cssClass = ['keyboard__tab'];
         newRow = [specialKey, ...letters];
         break;
       }
       case 2: {
         const specialKey = {};
-        specialKey.text = 'Caps lock';
-        specialKey.cssClass = 'key__caps-lock';
+        specialKey.text = 'CapsLock';
+        specialKey.cssClass = ['keyboard__caps-lock'];
 
         const specialKeyLast = {};
         specialKeyLast.text = 'Enter';
-        specialKeyLast.cssClass = 'key__enter';
+        specialKeyLast.cssClass = ['keyboard__enter'];
 
         newRow = [specialKey, ...letters, specialKeyLast];
         break;
@@ -62,7 +65,7 @@ const mainKeyboardData = (lang) => {
       default: {
         const specialKeys = {};
         specialKeys.text = 'Shift';
-        specialKeys.cssClass = 'key__shift';
+        specialKeys.cssClass = ['keyboard__shift'];
 
         const specialKeyArrowUp = {};
         specialKeyArrowUp.text = '&uarr;';
@@ -70,7 +73,7 @@ const mainKeyboardData = (lang) => {
           specialKeys,
           ...letters,
           specialKeyArrowUp,
-          { ...specialKeys, cssClass: 'key__right-shift' },
+          { ...specialKeys, cssClass: ['keyboard__right-shift'] },
         ];
         break;
       }
@@ -79,7 +82,22 @@ const mainKeyboardData = (lang) => {
     return [...acc, newRow];
   }, []);
 
-  return [...mainKeyboard, lastKeyboardRow()];
+  const keyboard = [...mainKeyboard, lastKeyboardRow()];
+
+  // add keyCode as css
+  return keyboard.map((row, index) => {
+    const newRow = row.map((key, rowIndex) => {
+      const { cssClass } = key;
+      const newCssClass = cssClass
+        ? [...cssClass, KEYBOARD_CODE[index][rowIndex]]
+        : [KEYBOARD_CODE[index][rowIndex]];
+      const newKey = { ...key, ...{ cssClass: newCssClass } };
+
+      return newKey;
+    });
+
+    return newRow;
+  });
 };
 
 const keyboardCapsLock = (keyboardData) => keyboardData
@@ -98,18 +116,16 @@ const keyboardCapsLock = (keyboardData) => keyboardData
     return [...acc, keyboardRowSymbols];
   }, []);
 
-const keyboardShift = (keyboardData, topShiftKeyboard) => keyboardData
-  .reduce((acc, keyboardRow, index) => {
-    if (index === 0) {
-      const topShiftSymbols = topShiftKeyboard.split('')
-        .reduce((topShiftKeyboardAcc, symbol) => [...topShiftKeyboardAcc, { text: symbol }], []);
-      return [acc, topShiftSymbols];
-    }
-
-    const keyboardRowSymbols = keyboardCapsLock(keyboardData);
-
-    return [...acc, keyboardRowSymbols];
-  }, []);
+const keyboardShift = (keyboardData, topShiftKeyboard) => {
+  const [topRow, ...rest] = keyboardData;
+  const newTopRow = topRow.map((symbol, index) => {
+    const newSymbol = topShiftKeyboard[index]
+      ? { ...symbol, text: topShiftKeyboard[index] }
+      : symbol;
+    return newSymbol;
+  });
+  return [newTopRow, ...rest];
+};
 
 export const KEYBOARD_RU = mainKeyboardData(RU);
 export const KEYBOARD_EN = mainKeyboardData(EN);
@@ -118,10 +134,10 @@ export const KEYBOARD_CAPS_LOCK_RU = keyboardCapsLock(KEYBOARD_RU);
 export const KEYBOARD_CAPS_LOCK_EN = keyboardCapsLock(KEYBOARD_EN);
 
 export const KEYBOARD_SHIFT_RU = keyboardShift(
-  KEYBOARD_RU,
+  KEYBOARD_CAPS_LOCK_RU,
   RU_KEYBOARDS_TOP_SHIFT,
 );
 export const KEYBOARD_SHIFT_EN = keyboardShift(
-  KEYBOARD_EN,
+  KEYBOARD_CAPS_LOCK_EN,
   EN_KEYBOARDS_TOP_SHIFT,
 );

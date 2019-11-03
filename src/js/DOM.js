@@ -14,9 +14,7 @@ export default class DOM {
    * @param {Array{String}} classList
    */
   static createElements(tagNames, classList) {
-    console.log(tagNames.length, tagNames);
     return tagNames.reduce((acc, { text, cssClass, tag = 'button' }) => {
-      console.log(text, cssClass, tag);
       const newAcc = document.createElement(tag);
       classList.forEach((strClass) => {
         newAcc.classList.add(strClass);
@@ -32,7 +30,9 @@ export default class DOM {
 
 
       if (cssClass) {
-        newAcc.classList.add(cssClass);
+        cssClass.forEach((strClass) => {
+          newAcc.classList.add(strClass);
+        });
       }
 
       return [...acc, newAcc];
@@ -53,25 +53,5 @@ export default class DOM {
     });
 
     to.appendChild(fragMent);
-  }
-
-  /**
-   *
-   * @param {HTMLElement} to
-   * @param {String} event
-   * @param {String} method
-   */
-  addEventListener(to, event, method) {
-    to.addEventListener(event, this[method]);
-  }
-
-  /**
-   *
-   * @param {HTMLElement} from
-   * @param {String} event
-   * @param {String} method
-   */
-  removeKeyUpEvent(from, event, method) {
-    from.removeEventListener(event, this[method]);
   }
 }
