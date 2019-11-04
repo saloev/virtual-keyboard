@@ -138,16 +138,27 @@ class Keyboard {
       Win: '',
       Alt: '',
       Space: ' ',
+      '←': '',
+      '↓': '',
+      '↑': '',
+      '→': '',
     };
 
-    if (textValue === 'Backspace') {
-      const newText = this.text.slice(0, -1);
-      this.text = newText;
-    } else {
-      const newText = dispatchSpecialText[textValue] !== undefined
-        ? dispatchSpecialText[textValue]
-        : textValue;
-      this.text = this.text.concat(newText);
+    switch (textValue) {
+      case 'Backspace': {
+        const newText = this.text.slice(0, -1);
+        this.text = newText;
+        break;
+      }
+
+      default: {
+        const newText = dispatchSpecialText[textValue] !== undefined
+          ? dispatchSpecialText[textValue]
+          : textValue;
+
+        this.text = this.text.concat(newText);
+        break;
+      }
     }
 
     if (focusToTextarea) {
@@ -178,7 +189,7 @@ class Keyboard {
     if (key === 'Shift') { this.shiftKeyPressed(); }
     this.activeKey(e);
 
-    const textOfKey = this.keyboard.querySelector(`.${code}`).innerHTML;
+    const textOfKey = this.keyboard.querySelector(`.${code}`).innerText;
     this.insertText(textOfKey);
   }
 
@@ -225,7 +236,7 @@ class Keyboard {
       this.removeActiveKeys({ code: elem.classList[elem.classList.length - 2] });
     }, 200);
 
-    this.insertText(elem.innerHTML, false);
+    this.insertText(elem.innerText, false);
   }
 
   inputInTextArea = () => {
