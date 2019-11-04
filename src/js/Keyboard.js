@@ -112,12 +112,13 @@ class Keyboard {
    * @param {EventObject} e
    */
 
-  removeActiveKey(e) {
-    const { key, code } = e;
+  removeActiveKeys(e) {
+    const { code } = e;
     this.keys.forEach((elem) => {
-      const { innerText } = elem;
-      if (innerText === key || elem.classList.contains(code)) {
-        elem.classList.remove('on');
+      if (elem.classList.contains(code)) {
+        setTimeout(() => {
+          elem.classList.remove('on');
+        }, 250);
       }
     });
   }
@@ -186,8 +187,10 @@ class Keyboard {
    */
   keyUp = (e) => {
     const { key } = e;
-    this.removeActiveKey(e);
-    if (key === 'Shift') { this.changeText(); }
+
+    this.removeActiveKeys(e);
+
+    if (key === 'Shift' || key === 'CapsLock') { this.changeText(); }
   }
 
   /**
@@ -196,6 +199,7 @@ class Keyboard {
   clickKey = (e) => {
     const { target: elem } = e;
     if (elem.tagName !== 'BUTTON') return;
+
     if (elem.classList.contains('CapsLock')) {
       const hasOnClass = elem.classList.toggle('on');
       if (hasOnClass) {
@@ -203,7 +207,23 @@ class Keyboard {
       } else {
         this.changeText();
       }
+
+      return;
     }
+
+    if (elem.textContent === 'Shift') {
+      this.shiftKeyPressed();
+
+      setTimeout(() => {
+        this.changeText();
+      }, 200);
+    }
+
+    this.activeKey({ code: elem.classList[elem.classList.length - 1] });
+
+    setTimeout(() => {
+      this.removeActiveKeys({ code: elem.classList[elem.classList.length - 2] });
+    }, 200);
 
     this.insertText(elem.innerHTML, false);
   }
